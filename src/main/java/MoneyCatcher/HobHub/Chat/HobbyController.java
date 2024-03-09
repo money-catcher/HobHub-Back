@@ -1,4 +1,5 @@
 package MoneyCatcher.HobHub.Chat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -7,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 public class HobbyController {
 
     private final RestTemplate restTemplate;
+    @Autowired
+    private HobbyRepository hobbyRepository;
 
     public HobbyController(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -14,6 +17,7 @@ public class HobbyController {
 
     public void callApi() {
         String apiUrl = "http://localhost:5000/hello"; // Flask 서버의 주소
+
 
         ResponseEntity<String> response = restTemplate.getForEntity(apiUrl, String.class);
         //apiUrl로 GET요청 보내고 응답 받아옴(헤더,상태코드 및 응답본문 포함)-> 문자열로 해둠 아니면 다른걸로 바꾸기

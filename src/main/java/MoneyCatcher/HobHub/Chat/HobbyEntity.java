@@ -13,6 +13,15 @@ public class HobbyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    private String hobby;//플라스크에서 가져온애
+
+    private String gender;
+    private int age;
+    private String home;
+    private String income;
+    private String motive;
+    private int work;
+    private int wkend;
+
+
 
 }

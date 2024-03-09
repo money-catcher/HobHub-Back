@@ -1,80 +1,99 @@
 package MoneyCatcher.HobHub.Board;
 
-import MoneyCatcher.HobHub.File.FileEntity;
-import MoneyCatcher.HobHub.File.FileRepository;
-import MoneyCatcher.HobHub.File.FileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 //게시판
 @Controller
+@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
+    private final BoardService boardService;
 
-    @Autowired
-    private final FileService fileService;
-
-    @Autowired
-    private final FileRepository fileRepository;
-    @Autowired
-    private BoardRepository boardRepository;
-
-    @GetMapping("/board")
-    public String home()
-    {
-
-        return "board";
-    }
-    //취미 서랍장
-    @GetMapping("board/generic")
-    public String index(Model model){
-        Iterable<BoardEntity> ones = boardRepository.findAll(); //BoardEntity에 있는 모든 값 차례로 꺼내서 ones에 담기
-        System.out.println(ones);
-
-        model.addAttribute("ones", ones);//보여줨
-        model.addAttribute("newOne", new BoardEntity());//새로운애 보여줭
-
-        Iterable<FileEntity> files = fileRepository.findAll();
-        model.addAttribute("files",files);
-        return "generic";
-    }
-    //새 게시물 업로드
-    @PostMapping("board/generic/upload")
-    public String uploadFile(@ModelAttribute BoardEntity one, @RequestParam("file") MultipartFile file, @RequestParam("files") List<MultipartFile> files) throws IOException, IOException {
-
-        boardRepository.save(one);
-        fileService.saveFile(file);
-
-        for (MultipartFile multipartFile : files) {
-            fileService.saveFile(multipartFile);
-        }
-
-        return "redirect:/board/generic";
-    }
-    //이미지 출력
-    @GetMapping("board/generic/images/{fileId}")
+    @GetMapping("/")//데이터 가져오기
     @ResponseBody
-    public Resource downloadImage(@PathVariable("fileId") Long id, Model model) throws  IOException{
-        FileEntity file = fileRepository.findById(id).orElse(null);
-        return new UrlResource("file:" + file.getSavedPath());
+    public ResponseEntity<List<BoardDTO>> findAll(){//이 형태로 반환해야됨
+        //DB에서 전체게시글 데이터 가져와서 list.html에 보여준다(DTO거쳐서)
+        List<BoardDTO> boardDTOList = boardService.findAll();//여러개 가져오는거라 리스트
+        return new ResponseEntity<>(boardDTOList, HttpStatus.OK);
+    }
+//    //글작성 폼
+//    @GetMapping("/save")
+//    public String saveForm() {
+//        return "form";
+//    }
+
+    //게시물 업로드
+    @PostMapping("/save")
+    @ResponseBody
+    public BoardDTO save(BoardDTO boardDTO) throws IOException//하나의 객체로 입력값 가져오기
+    {
+        boardService.save(boardDTO);
+        return boardDTO;
     }
 
 
-    @PostMapping("board/generic/new")
-    public String onecreate(@ModelAttribute BoardEntity one)
+    @GetMapping("/{id}")//게시물 상세조회
+    public ResponseEntity<BoardDTO> findById(@PathVariable Long id)
     {
-        boardRepository.save(one);
-        return "redirect:/";
+        boardService.updateHits(id);
+        BoardDTO boardDTO = boardService.findById(id);
+        return new ResponseEntity<>(boardDTO, HttpStatus.OK);
+    }
+    //게시물 정보를 뷰에 전달해서 사용자에게 보여줘야되기 때문에 조회한 게시물의 정보를 뷰(model)에 담아서사용
+
+    //update 누르면 보여지는 화면
+    @GetMapping("/update/{id}")
+    public BoardDTO updateForm(@PathVariable Long id)
+    {
+        BoardDTO boardDTO = boardService.findById(id);//해당 DTO 찾아서 리턴
+        return boardDTO;
+    }
+
+    //업데이트 요청
+    @PostMapping("/update")
+    public ResponseEntity<BoardDTO> update(BoardDTO boardDTO)
+    {
+        BoardDTO board = boardService.update(boardDTO);//수정된 객체 가져와서 리턴해
+        return new ResponseEntity<>(boardDTO,HttpStatus.OK);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        boardService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
     }
 
 }
+
+
+
+
+//    //이미지 출력
+//    @GetMapping("board/generic/images/{fileId}")
+//    @ResponseBody
+//    public Resource downloadImage(@PathVariable("fileId") Long id, Model model) throws  IOException{
+//        FileEntity file = fileRepository.findById(id).orElse(null);
+//        return new UrlResource("file:" + file.getSavedPath());
+//    }
+//
+//
+//    @PostMapping("board/generic/new")
+//    public String onecreate(@ModelAttribute BoardEntity one)
+//    {
+//        boardRepository.save(one);
+//        return "redirect:/";
+//    }
+
+

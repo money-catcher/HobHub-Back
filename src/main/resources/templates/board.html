@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>hello yujin</title>
     <meta charset="utf-8" />
@@ -55,7 +55,7 @@
 										<img src="../images/pic01.jpg" alt="" />
 									</span>
                     <a href="board/generic">
-                        <h2>등산</h2>
+                        <h2><span th:text="${hobby}"></span></h2>
                     </a>
                 </article>
                 <article class="style2">

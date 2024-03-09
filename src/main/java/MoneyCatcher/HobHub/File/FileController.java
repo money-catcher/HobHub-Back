@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 public class FileController {
 
-    @Autowired
-    private final FileService fileService;
 
 
 

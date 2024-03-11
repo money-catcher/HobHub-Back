@@ -1,4 +1,4 @@
-package MoneyCatcher.HobHub.Chat;
+package MoneyCatcher.HobHub.Hobby;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.xml.transform.OutputKeys;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +29,14 @@ public class BoardController {
         List<BoardDTO> boardDTOList = boardService.findAll();//여러개 가져오는거라 리스트
         return new ResponseEntity<>(boardDTOList, HttpStatus.OK);
     }
-//    //글작성 폼
-//    @GetMapping("/save")
-//    public String saveForm() {
-//        return "form";
-//    }
 
     //게시물 업로드
     @PostMapping("/save")
     @ResponseBody
-    public BoardDTO save(BoardDTO boardDTO) throws IOException//하나의 객체로 입력값 가져오기
+    public ResponseEntity<String> save(BoardDTO boardDTO) throws IOException//하나의 객체로 입력값 가져오기
     {
         boardService.save(boardDTO);
-        return boardDTO;
+        return ResponseEntity.status(HttpStatus.OK).body("게시물 저장완료");
     }
 
 

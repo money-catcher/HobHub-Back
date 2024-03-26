@@ -4,14 +4,18 @@ import MoneyCatcher.HobHub.Board.BoardEntity;
 import MoneyCatcher.HobHub.User.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
+//얘 생성자없는데 왜 잘돌아감??
 @Entity
 @Table(name = "hobby_list")
 @Getter
 @Setter
+@NoArgsConstructor
 public class HobbyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +30,9 @@ public class HobbyEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @OneToMany(mappedBy = "hobby")
+    private List<BoardEntity> boardEntityList = new ArrayList<>();
 
     public static HobbyEntity ToEntity(HobbyDTO hobbyDTO)
     {

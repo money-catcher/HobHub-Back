@@ -1,13 +1,17 @@
 package MoneyCatcher.HobHub.Board;
 
 import MoneyCatcher.HobHub.File.FileEntity;
+import MoneyCatcher.HobHub.Hobby.HobbyEntity;
+import MoneyCatcher.HobHub.User.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,6 +40,14 @@ public class BoardEntity extends baseEntity{
     private List<FileEntity> FileEntityList = new ArrayList<>();//db에 컬럼이 정의되는건 아님 왜??
     //FileEntityList 라는 이름의 변수는 List<FileEntity> 형태를 담을 수 있고 new ArrayList<>()로 초기화됨!
     //아 기억남 new어쩌고가 초기화할때 사용됨
+
+    @ManyToOne
+    @JoinColumn(name = "hobby_id")
+    private HobbyEntity hobby;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     //DTO로 받아서 보드엔티티로 리턴(파일이 없는 경우)
     public static BoardEntity toSaveEntity(BoardDTO boardDTO){

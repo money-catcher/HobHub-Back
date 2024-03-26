@@ -34,10 +34,10 @@ dependencies {
 
 }
 
-//tasks.named('test') {
-//	useJUnitPlatform()
-//}
-
-tasks.withType(Jar) {
-	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+test {
+	useJUnitPlatform()
 }
+
+//tasks.withType(Jar) {
+//	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//}

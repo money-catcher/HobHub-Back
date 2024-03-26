@@ -39,11 +39,4 @@ public class FileEntity extends baseEntity {
         return fileEntity;
     }
 
-//    @Builder
-//    public FileEntity(Long id, String orgNm, String savedNm, String savedPath) {
-//        this.id = id;
-//        this.orgNm = orgNm;
-//        this.savedNm = savedNm;
-//        this.savedPath = savedPath;
-//    }
 }

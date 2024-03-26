@@ -2,6 +2,10 @@ package MoneyCatcher.HobHub.Board;
 
 import MoneyCatcher.HobHub.File.FileEntity;
 import MoneyCatcher.HobHub.File.FileRepository;
+import MoneyCatcher.HobHub.Hobby.HobbyDTO;
+import MoneyCatcher.HobHub.Hobby.HobbyEntity;
+import MoneyCatcher.HobHub.User.UserEntity;
+import MoneyCatcher.HobHub.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +25,9 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final FileRepository fileRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public void save(BoardDTO boardDTO) throws IOException {
         //파일첨부 여부에 따라 로직 분리
@@ -55,15 +63,14 @@ public class BoardService {
         }
 
     }
+    //특정유저의 특정 취미에 대한 findall
     @Transactional
-    public List<BoardDTO> findAll() {//찾을때 entity로 받아서 dto로 변환 후 리턴
-        List<BoardEntity> boardEntityList = boardRepository.findAll();//레포지토리에서 모두 찾아서 엔티티를 리스트형태로 저장
-        List<BoardDTO> boardDTOList = new ArrayList<>();//boardDTOList는 보드DTO담을수있는 빈 리스트
-        for(BoardEntity boardEntity: boardEntityList)//엔티티리스트 반복문 돌려서 하나의 엔티티객체에 꺼내놔
-        {
-            boardDTOList.add(BoardDTO.toBoardDTO(boardEntity));//엔티티->디티오 변환한고 리스트에 저장
-        }
-        return boardDTOList;
+    public List<BoardDTO> findAll(Long hobbyId) {//찾을때 entity로 받아서 dto로 변환 후 리턴
+        List<BoardEntity> boardEntityList = boardRepository.findAllByHobbyId(hobbyId);
+
+        return boardEntityList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());//디티오로 변환 후 리턴
     }
 
     //조회수증가
@@ -91,10 +98,55 @@ public class BoardService {
         BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
         boardRepository.save(boardEntity);
         return findById(boardDTO.getId());//위의 함수 호출
-
     }
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<BoardDTO> getBoardsByAge(int age)
+    {
+        List<UserEntity> users = userRepository.findByAge(age);//user 여러명 가져옴
+        List<Long> userIds = new ArrayList<>();
+
+        for (UserEntity user : users) {
+            userIds.add(user.getId());
+        }
+        //23살인 userid 여러개 반환 (2번, 5번, 6번), userIds 에 리스트로 저장
+
+        List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
+
+        for(long id : userIds)
+        {
+            List<BoardEntity> userboard = boardRepository.findAllByUserId(id);
+            for(BoardEntity boards : userboard){
+                boardList.add(boards);
+            }
+        }
+
+        return boardList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<BoardDTO> getBoardsByHome(String home) {
+        List<UserEntity> users = userRepository.findByHome(home);//user 여러명 가져옴
+        List<Long> userIds = new ArrayList<>();
+        for (UserEntity user : users) {
+            userIds.add(user.getId());
+        }
+        List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
+        for(long id : userIds)
+        {
+            List<BoardEntity> userboard = boardRepository.findAllByUserId(id);
+            for(BoardEntity boards : userboard){
+                boardList.add(boards);
+            }
+        }
+        return boardList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -10,11 +10,14 @@ import MoneyCatcher.HobHub.Hobby.HobbyRepository;
 import MoneyCatcher.HobHub.Hobby.HobbyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +25,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final HobbyService hobbyService;
-    private final BoardService boardService;
-
-    @Autowired
-    private final BoardRepository boardRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -38,7 +37,9 @@ public class UserController {
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO)
     {
         userService.save(userDTO);
-        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        List<UserEntity> entities = userRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        UserDTO userDTO1 = UserDTO.toUserDTO(entities.get(0));
+        return new ResponseEntity<>(userDTO1, HttpStatus.OK);
     }
 
     //허비엔티티 받아와서(프론트에서!!) 해당하는 유저에 저장하기
@@ -49,7 +50,9 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         hobbyService.save(hobbyDTO, user);
-        return new ResponseEntity<>(hobbyDTO, HttpStatus.OK);
+        List<HobbyEntity> entities = hobbyRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        HobbyDTO hobbyDTO1 = HobbyDTO.toHobbyDTO(entities.get(0));
+        return new ResponseEntity<>(hobbyDTO1, HttpStatus.OK);
     }
 
     //특정 유저의 취미들 반환

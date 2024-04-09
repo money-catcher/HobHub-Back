@@ -34,5 +34,6 @@ public class HobbyService {
         hobbyEntity.setUser(user);//해당하는 유저를 허비엔티티에 셋팅
         hobbyRepository.save(hobbyEntity);
     }
+
 }
 

@@ -43,15 +43,13 @@ public class UserController {
 
     //허비엔티티 받아와서(프론트에서!!) 해당하는 유저에 저장하기
     @PostMapping("/{userId}/hobby")
-    public ResponseEntity<String> addHobbyToUser(@PathVariable Long userId, @RequestBody HobbyEntity hobbyEntity)
+    public ResponseEntity<HobbyDTO> addHobbyToUser(@PathVariable Long userId, @RequestBody HobbyDTO hobbyDTO)
     {
         UserEntity user = userRepository.findById(userId)//해당하는 유저 찾아서 user에 저장
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
-        hobbyEntity.setUser(user);//해당하는 유저를 허비엔티티에 셋팅
-        hobbyRepository.save(hobbyEntity);//그 허비 엔티티를 저장
-
-        return ResponseEntity.status(HttpStatus.OK).body(hobbyEntity.getHobby()+"을(를) 유저에 저장완료");
+        hobbyService.save(hobbyDTO, user);
+        return new ResponseEntity<>(hobbyDTO, HttpStatus.OK);
     }
 
     //특정 유저의 취미들 반환

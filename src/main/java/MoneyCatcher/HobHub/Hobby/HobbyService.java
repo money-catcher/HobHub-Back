@@ -29,9 +29,9 @@ public class HobbyService {
                 .collect(Collectors.toList());
     }
 
-    public void save(HobbyDTO hobbyDTO){
-
+    public void save(HobbyDTO hobbyDTO, UserEntity user){
         HobbyEntity hobbyEntity = HobbyEntity.ToEntity(hobbyDTO);
+        hobbyEntity.setUser(user);//해당하는 유저를 허비엔티티에 셋팅
         hobbyRepository.save(hobbyEntity);
     }
 }

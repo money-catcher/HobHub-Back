@@ -45,6 +45,8 @@ public class HobbyEntity {
     {
         HobbyEntity hobbyEntity = new HobbyEntity();
         hobbyEntity.setHobby(hobbyDTO.getHobby());
+        hobbyEntity.setCategory(hobbyDTO.getCategory());
+        hobbyEntity.setPercent(hobbyDTO.getPercent());
 
         return hobbyEntity;
     }

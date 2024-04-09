@@ -35,6 +35,9 @@ public class BoardEntity extends baseEntity{
     @Column
     private int fileAttached;//1 or 0 file 유무
 
+    @Column
+    private String open;
+
     //mappedBy는 어떤거랑 매칭이 되냐. 파일엔티티는 보드엔티티라는 이름으로 매핑된다 이말일듯. FileEntity가 자식이고 보드엔티티가 부모. 부모가 삭제될때 자식도 함께 삭제된다
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FileEntity> FileEntityList = new ArrayList<>();//db에 컬럼이 정의되는건 아님 왜??
@@ -56,6 +59,7 @@ public class BoardEntity extends baseEntity{
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached(0); // 파일 없음.
+        boardEntity.setOpen(boardDTO.getOpen());
         return boardEntity;
     }
     //DTO로 받아서 파일엔티티로 리턴(파일이 있는 경우)
@@ -64,6 +68,7 @@ public class BoardEntity extends baseEntity{
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setBoardHits(0);
+        boardEntity.setOpen(boardDTO.getOpen());
         boardEntity.setFileAttached(1);
         return boardEntity;
     }
@@ -74,6 +79,7 @@ public class BoardEntity extends baseEntity{
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
+        boardEntity.setOpen(boardDTO.getOpen());
 //        boardEntity.setFileAttached(0); // 파일 없음.
         return boardEntity;
     }

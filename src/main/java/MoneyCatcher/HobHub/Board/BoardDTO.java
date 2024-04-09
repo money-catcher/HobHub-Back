@@ -18,6 +18,7 @@ public class BoardDTO {
     private String title;
     private String content;
     private int boardHits;//조회수
+    private String open;
 
     private LocalDateTime boardCreatedTime;//작성시간
     private LocalDateTime boardUpdatedTime;//수정시간
@@ -35,6 +36,7 @@ public class BoardDTO {
         boardDTO.setTitle(boardEntity.getTitle());
         boardDTO.setContent(boardEntity.getContent());
         boardDTO.setBoardHits(boardEntity.getBoardHits());
+        boardDTO.setOpen(boardEntity.getOpen());
         boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
         boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
         if(boardEntity.getFileAttached() == 0)

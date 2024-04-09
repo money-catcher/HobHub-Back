@@ -35,10 +35,10 @@ public class UserController {
 
     //falsk에서 유저정보 받아와
     @PostMapping("/save")
-    public ResponseEntity<String> saveUser(@RequestBody UserDTO userDTO)
+    public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO userDTO)
     {
         userService.save(userDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("유저아이디" + userDTO.getId() + "번 저장되었습니다.");
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
     //허비엔티티 받아와서(프론트에서!!) 해당하는 유저에 저장하기

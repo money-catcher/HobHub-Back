@@ -55,10 +55,12 @@ public class BoardService {
             //6. board_table 에 해당 데이터 save 처리, board_file_table에 해당 데이터 save 처리
             MultipartFile boardFile = boardDTO.getBoardFile(); //디티오에 있는 파일꺼내서 boardFile에 저장
             String originalFilename = boardFile.getOriginalFilename();
-//            String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
-//            String savePath = fileDir + storedFileName;//고대로 위치에 파일 저장되게끔 이거 서버경로로 해야됨
-//            boardFile.transferTo(new File(savePath));//5. boardFile에 있는 파일 해당 경로에 저장(서버에 저장)
-            String savePath = fileService.uploadImageToS3(boardFile);//여기서 s3으로 업로드 후 서버주소 리턴
+            String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
+
+             //C://akdlaj//akdljal/sto
+             //
+            String savePath = "/home/ec2-user/apps/HobHub-Back/img_dir" + storedFileName;//고대로 위치에 파일 저장되게끔 이거 서버경로로 해야됨
+            boardFile.transferTo(new File(savePath));//5. boardFile에 있는 파일 해당 경로에 저장(서버에 저장)
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);//파일 제외 title, content 등 보드엔티티에 값 save(보드엔티티에 0,1 값 설정하는거 있음)
             boardEntity.setUser(user);//보드엔티티에 user 셋팅
             boardEntity.setHobby(hobby);//hobby 셋팅

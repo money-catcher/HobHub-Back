@@ -119,7 +119,19 @@ public class BoardService {
     @Transactional
     public List<BoardDTO> getBoardsByAge(int age)
     {
-        List<UserEntity> users = userRepository.findByAge(age);//user 여러명 가져옴
+        List<UserEntity> users = new ArrayList<>();
+
+        if(age>=20 && age<30){
+            users = userRepository.findByAgeBetween(20,29);//user 여러명 가져옴
+        }
+        if(age>=30 && age<40) {
+            users = userRepository.findByAgeBetween(30, 39);
+        }
+        if(age < 20)
+        {
+            users = userRepository.findByAgeBetween(10,19);
+        }
+//        List<UserEntity> users = userRepository.findByAge(20,29);//user 여러명 가져옴
         List<Long> userIds = new ArrayList<>();
 
         for (UserEntity user : users) {

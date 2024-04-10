@@ -64,8 +64,6 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Post added to hobby successfully");
     }
 
-    //유저 중에서 회원과 같은 지역인 사람의 게시물 보여주기
-
 
     @GetMapping("/{id}")//게시물 상세조회.
     public ResponseEntity<BoardDTO> findById(@PathVariable Long id)

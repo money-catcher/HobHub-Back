@@ -173,4 +173,25 @@ public class BoardService {
                 .map(BoardDTO::toBoardDTO)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public List<BoardDTO> getBoardsByMotive(String motive) {
+        List<UserEntity> users = userRepository.findByMotive(motive);//user 여러명 가져옴
+        List<Long> userIds = new ArrayList<>();
+        for (UserEntity user : users) {
+            userIds.add(user.getId());
+        }
+        List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
+        for(long id : userIds)
+        {
+            List<BoardEntity> userboard = boardRepository.findAllByUserId(id);
+            for(BoardEntity boards : userboard){
+                boardList.add(boards);
+            }
+        }
+        return boardList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());
+
+    }
 }

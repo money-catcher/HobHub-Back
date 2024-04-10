@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     List<UserEntity> findByAgeBetween(int startAge, int endAge);
     List<UserEntity> findByHome(String home);
-
+    List<UserEntity> findByMotive(String motive);
 }

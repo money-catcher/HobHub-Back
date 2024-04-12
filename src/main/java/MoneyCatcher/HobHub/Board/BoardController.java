@@ -43,6 +43,7 @@ public class BoardController {
     public ResponseEntity<List<BoardDTO>> getUserBoard(@PathVariable Long hobbyId){
         //가져온 취미에서 다시 find해서 특정 취미에 대한 게시물 get
         List<BoardDTO> boardDTOList = boardService.findAll(hobbyId);
+
         return new ResponseEntity<>(boardDTOList, HttpStatus.OK);
     }
 

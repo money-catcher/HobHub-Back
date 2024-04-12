@@ -37,8 +37,8 @@ public class HobbyEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-
-    @OneToMany(mappedBy = "hobby")
+    //허비 삭제해도 자식(보드)는 삭제안됨
+    @OneToMany(mappedBy = "hobby", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<BoardEntity> boardEntityList = new ArrayList<>();
 
     public static HobbyEntity ToEntity(HobbyDTO hobbyDTO)

@@ -35,5 +35,9 @@ public class HobbyService {
         hobbyRepository.save(hobbyEntity);
     }
 
+    public void deleteHobbyEntity(Long hobbyId){
+        hobbyRepository.deleteById(hobbyId);
+    }
+
 }
 

@@ -23,6 +23,7 @@ public class BoardEntity extends baseEntity{
     @Id// pk 컬럼지정. 필수
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(length = 20, nullable = false)//null일수없다 크기는20
     private String title;
 

@@ -7,8 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-//    private String resourcePath = "/upload/**";//view 에서 접근할경로
-//    private String savePath = "file:///C:/springboot_img/";//실제 파일저장경로. 이 경로를 위의 경로로 접근하겠다~
+//    private String resourcePath = "/images/**";//view 에서 접근할경로
+//    private String savePath = "http://13.236.203.189/i";//실제 파일저장경로. 이 경로를 위의 경로로 접근하겠다~
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry){
 //        registry.addResourceHandler(resourcePath) //요청경로가 업로드 어쩌고인경우

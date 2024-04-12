@@ -59,7 +59,7 @@ public class BoardService {
 
              //C://akdlaj//akdljal/sto
              //
-            String savePath = "/home/ec2-user/apps/HobHub-Back/img_dir" + storedFileName;//고대로 위치에 파일 저장되게끔 이거 서버경로로 해야됨
+            String savePath = "/home/jin/images/" + storedFileName;//고대로 위치에 파일 저장되게끔 이거 서버경로로 해야됨
             boardFile.transferTo(new File(savePath));//5. boardFile에 있는 파일 해당 경로에 저장(서버에 저장)
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);//파일 제외 title, content 등 보드엔티티에 값 save(보드엔티티에 0,1 값 설정하는거 있음)
             boardEntity.setUser(user);//보드엔티티에 user 셋팅

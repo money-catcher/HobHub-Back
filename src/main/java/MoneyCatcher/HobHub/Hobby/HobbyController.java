@@ -15,4 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HobbyController {
 
+    private final HobbyService hobbyService;
+
+    @DeleteMapping("/delete/{hobbyId}")
+    public void deleteHobby(@PathVariable Long hobbyId){
+        hobbyService.deleteHobbyEntity(hobbyId);
+    }
+
 }

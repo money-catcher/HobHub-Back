@@ -65,6 +65,7 @@ public class BoardController {
     }
 
 
+
     @GetMapping("/{id}")//게시물 상세조회.
     public ResponseEntity<BoardDTO> findById(@PathVariable Long id)
     {
@@ -88,7 +89,7 @@ public class BoardController {
         return new ResponseEntity<>(boardDTO,HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         boardService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");
@@ -112,7 +113,6 @@ public class BoardController {
         List<BoardDTO> boardEntityList = boardService.getBoardsByMotive(motive);
         return new ResponseEntity<>(boardEntityList, HttpStatus.OK);//왜 아무것도 보여주지 않는가...
     }
-
 
 }
 

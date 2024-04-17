@@ -35,8 +35,6 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<BoardEntity> boardEntityList = new ArrayList<>();
-
-    //아니이게 좀 이상한듯?? 냅다 보드엔티티리스트만 반환해? 유저의?
     public List<BoardEntity> getBoardEntityList(){
         return boardEntityList;
     }

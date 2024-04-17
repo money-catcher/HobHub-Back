@@ -100,19 +100,19 @@ public class BoardController {
     public ResponseEntity<List<BoardDTO>> getBoardsByAge(@PathVariable int age)
     {
         List<BoardDTO> boardEntityList = boardService.getBoardsByAge(age);
-        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);//왜 아무것도 보여주지 않는가...
+        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
     }
     @GetMapping("/home/{home}")
     public ResponseEntity<List<BoardDTO>> getBoardsByHome(@PathVariable String home)
     {
         List<BoardDTO> boardEntityList = boardService.getBoardsByHome(home);
-        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);//왜 아무것도 보여주지 않는가...
+        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
     }
     @GetMapping("/motive/{motive}")
     public ResponseEntity<List<BoardDTO>> getBoardsByMotive(@PathVariable String motive)
     {
         List<BoardDTO> boardEntityList = boardService.getBoardsByMotive(motive);
-        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);//왜 아무것도 보여주지 않는가...
+        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
     }
 
 }

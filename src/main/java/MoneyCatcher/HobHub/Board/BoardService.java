@@ -69,10 +69,7 @@ public class BoardService {
 //            BoardEntity board = boardEntity;
             savePath = "http://ec2-13-236-203-189.ap-southeast-2.compute.amazonaws.com/images/" + storedFileName;
             FileEntity fileEntity = FileEntity.toBoardFileEntity(board,originalFilename,savePath);//파일엔티티로 변환하기위한 작업. 아까 title,content 이런거 들어있는 보드엔티티 포함 같이저장하기
-            fileRepository.save(fileEntity);//db에 저장.. 어렵다 근데지금 파일을 디비에 저장하는데서 오류가 난거 아냐?
-            //아니여기 파일저장하는거 없는데 대채 어디서 파일을 저장하는거야
-            //일반적인 이미지 게시판 저장방법은 mysql에 이미지를 저장 하지는 않구요
-            //이미지를 서버에 업로딩 한 후에 해당 경로를 DB에 저장 합니다.
+            fileRepository.save(fileEntity);
         }
 
     }

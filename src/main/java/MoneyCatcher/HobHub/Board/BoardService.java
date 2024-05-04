@@ -67,7 +67,7 @@ public class BoardService {
             Long saveId = boardRepository.save(boardEntity).getId();//엔티티저장 후 방금 저장한 엔티티아이디가져옴 왜? 부모의 board_id값이 필요함(보드엔티티의 아이디값 겟)
             BoardEntity board = boardRepository.findById(saveId).get();//다시 디비에서 부모 얻어옴. findById는 Optional로 반환하는데 이걸 get으로 다시 가져오면서 보드엔티티값을 가져옴
 //            BoardEntity board = boardEntity;
-            savePath = "http://ec2-13-236-203-189.ap-southeast-2.compute.amazonaws.com/images/" + storedFileName;
+            savePath = "http://ec2-13-125-104-87.ap-northeast-2.compute.amazonaws.com/images/" + storedFileName;
             FileEntity fileEntity = FileEntity.toBoardFileEntity(board,originalFilename,savePath);//파일엔티티로 변환하기위한 작업. 아까 title,content 이런거 들어있는 보드엔티티 포함 같이저장하기
             fileRepository.save(fileEntity);
         }

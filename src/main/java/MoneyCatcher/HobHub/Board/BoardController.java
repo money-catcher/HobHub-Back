@@ -90,7 +90,7 @@ public class BoardController {
         return new ResponseEntity<>(boardDTO,HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         boardService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted");

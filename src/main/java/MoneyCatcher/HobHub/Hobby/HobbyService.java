@@ -2,6 +2,7 @@ package MoneyCatcher.HobHub.Hobby;
 
 import MoneyCatcher.HobHub.User.UserEntity;
 import MoneyCatcher.HobHub.User.UserRepository;
+import MoneyCatcher.HobHub.UserH.UserHEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,12 @@ public class HobbyService {
         return hobbyEntityList.stream()
                 .map(HobbyDTO::toHobbyDTO)
                 .collect(Collectors.toList());
+    }
+    @Transactional
+    public HobbyEntity find(Long hobby_id) {
+        HobbyEntity hobbyEntity = hobbyRepository.findById(hobby_id)
+                .orElseThrow(() -> new RuntimeException("Hobby not found with id: " + hobby_id));
+        return hobbyEntity;
     }
 
     public void save(HobbyDTO hobbyDTO, UserEntity user){

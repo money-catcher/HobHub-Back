@@ -4,6 +4,7 @@ import MoneyCatcher.HobHub.Board.BoardDTO;
 import MoneyCatcher.HobHub.Board.BoardEntity;
 import MoneyCatcher.HobHub.Hobby.HobbyEntity;
 
+import MoneyCatcher.HobHub.UserH.UserHEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,9 @@ public class UserEntity {
     private String motive;
     private int work;
     private int wkend;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserHEntity userh;
 
     @OneToMany(mappedBy = "user")
     private List<HobbyEntity> hobby;

@@ -51,7 +51,6 @@ public class UserController {
         userService.save(userDTO);//유저 저장
         List<UserEntity> entities = userRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));//가장 최근에 저장한 유저 불러와서
         UserDTO userDTO1 = UserDTO.toUserDTO(entities.get(0));//userDTO1에 다시 저장. userDTO는 primary key인 id값이 없어서 쓸 수 없음!
-        //엔티티 리스트를 가져오는거야? 쓰읍,, 아 userDTO1이 제일 최근에 저장한 디티오 말하는거 아님? 리스트가 아니라 디티오 하나
         UserEntity user = userRepository.findById(userDTO1.getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         UserHEntity userHEntity = new UserHEntity(); //연관테이블 new 생성
@@ -69,10 +68,6 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
 
         hobbyService.save(hobbyDTO, user);
-//        UserHEntity userHEntity = new UserHEntity();
-//        user.setUserh(userHEntity);
-//        userHEntity.setUser(user);
-//        userHRepository.save(userHEntity);
         List<HobbyEntity> entities = hobbyRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         HobbyDTO hobbyDTO1 = HobbyDTO.toHobbyDTO(entities.get(0));
         return new ResponseEntity<>(hobbyDTO1, HttpStatus.OK);

@@ -20,7 +20,7 @@ public class HobbyService {
     private final HobbyRepository hobbyRepository;
     private final UserRepository userRepository;
 
-    //hobby 모두 찾기 인데!! userid로 찾아야됨
+    //hobby 모두 찾기 인데 userid로 찾아야됨
     @Transactional
     public List<HobbyDTO> findAll(Long id) {//찾을때 entity로 받아서 dto로 변환 후 리턴
         List<HobbyEntity> hobbyEntityList = hobbyRepository.findAllByUserId(id);

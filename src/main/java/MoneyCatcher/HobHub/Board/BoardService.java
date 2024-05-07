@@ -57,8 +57,6 @@ public class BoardService {
             String originalFilename = boardFile.getOriginalFilename();
             String storedFileName = System.currentTimeMillis() + "_" + originalFilename;
 
-             //C://akdlaj//akdljal/sto
-             //
             String savePath = "/home/jin/images/" + storedFileName;//고대로 위치에 파일 저장되게끔 이거 서버경로로 해야됨
             boardFile.transferTo(new File(savePath));//5. boardFile에 있는 파일 해당 경로에 저장(서버에 저장)
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);//파일 제외 title, content 등 보드엔티티에 값 save(보드엔티티에 0,1 값 설정하는거 있음)
@@ -135,7 +133,6 @@ public class BoardService {
         for (UserEntity user : users) {
             userIds.add(user.getId());
         }
-        //23살인 userid 여러개 반환 (2번, 5번, 6번), userIds 에 리스트로 저장
 
         List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
 

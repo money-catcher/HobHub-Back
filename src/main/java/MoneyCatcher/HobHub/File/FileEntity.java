@@ -24,12 +24,11 @@ public class FileEntity extends baseEntity {
     @Column
     private String storedFileName;
 
-    @ManyToOne(fetch = FetchType.LAZY)//부모엔티티 조회시 자식엔티티 함께 조회(다같이가져와)
+    @ManyToOne(fetch = FetchType.LAZY)//부모엔티티 조회시 자식엔티티 함께 조회
     @JoinColumn(name = "board_id")
     private BoardEntity boardEntity;//부모엔티티타입으로 적어줘야됨
-    //실제 db에 들어갈때는 id값만 들어감 뭔말?
+    //실제 db에 들어갈때는 id값만
 
-    //이곳에 저장합니다.
     public static FileEntity toBoardFileEntity(BoardEntity boardEntity, String originalFileName, String storedFileName)
     {
         FileEntity fileEntity = new FileEntity();

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//원데이클래스 출력 및 입력
 @RestController
 @RequestMapping("/one")
 @RequiredArgsConstructor

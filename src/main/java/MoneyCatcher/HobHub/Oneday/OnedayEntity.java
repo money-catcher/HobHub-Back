@@ -34,5 +34,8 @@ public class OnedayEntity {
     private String link;
 
     @Column
+    private String level;
+
+    @Column
     private String picture;
 }

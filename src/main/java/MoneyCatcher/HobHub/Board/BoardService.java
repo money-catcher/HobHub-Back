@@ -189,4 +189,41 @@ public class BoardService {
                 .collect(Collectors.toList());
 
     }
+
+    public List<BoardDTO> getBoardsByGender(String gender) {
+        List<UserEntity> users = userRepository.findByGender(gender);//user 여러명 가져옴
+        List<Long> userIds = new ArrayList<>();
+        for (UserEntity user : users) {
+            userIds.add(user.getId());
+        }
+        List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
+        for(long id : userIds)
+        {
+            List<BoardEntity> userboard = boardRepository.findAllByUserId(id);
+            for(BoardEntity boards : userboard){
+                boardList.add(boards);
+            }
+        }
+        return boardList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());
+    }
+    public List<BoardDTO> getBoardsByIncome(String income) {
+        List<UserEntity> users = userRepository.findByIncome(income);//user 여러명 가져옴
+        List<Long> userIds = new ArrayList<>();
+        for (UserEntity user : users) {
+            userIds.add(user.getId());
+        }
+        List<BoardEntity> boardList = new ArrayList<>();//새로운 보드리스트 생성
+        for(long id : userIds)
+        {
+            List<BoardEntity> userboard = boardRepository.findAllByUserId(id);
+            for(BoardEntity boards : userboard){
+                boardList.add(boards);
+            }
+        }
+        return boardList.stream()
+                .map(BoardDTO::toBoardDTO)
+                .collect(Collectors.toList());
+    }
 }

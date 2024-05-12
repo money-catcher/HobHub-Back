@@ -115,6 +115,19 @@ public class BoardController {
         return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
     }
 
+    @GetMapping("/gender/{gender}")
+    public ResponseEntity<List<BoardDTO>> getBoardsByGender(@PathVariable String gender)
+    {
+        List<BoardDTO> boardEntityList = boardService.getBoardsByGender(gender);
+        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
+    }
+    @GetMapping("/income/{income}")
+    public ResponseEntity<List<BoardDTO>> getBoardsByIncome(@PathVariable String income)
+    {
+        List<BoardDTO> boardEntityList = boardService.getBoardsByIncome(income);
+        return new ResponseEntity<>(boardEntityList, HttpStatus.OK);
+    }
+
 }
 
 

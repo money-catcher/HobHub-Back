@@ -1,4 +1,4 @@
-package KakaoLogin.demo.Kakao;
+package MoneyCatcher.HobHub.Kakao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

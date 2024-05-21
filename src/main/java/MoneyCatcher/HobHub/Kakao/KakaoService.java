@@ -16,66 +16,84 @@ import reactor.core.publisher.Mono;
 @Service
 public class KakaoService {
 
-    private String client_id;
-    private final String KATUH_TOKEN_URL;
-    private final String KAUTH_USER_URL;
+    @Value("${kakao.client_id}")
+    private String clientId;
 
-    @Autowired
-    public KakaoService(@Value("${kakao.client_id}") String client_id) {
-        this.client_id = client_id;
-        this.KATUH_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
-        this.KAUTH_USER_URL = "https://kapi.kakao.com/v2/user/me";
-    }
+    @Value("${kakao.redirect_uri}")
+    private String redirectUri;
+
+    @Value("${kakao.token_url:https://kauth.kakao.com/oauth/token}")
+    private String tokenUrl;
+
+    @Value("${kakao.user_info_url:https://kapi.kakao.com/v2/user/me}")
+    private String userInfoUrl;
+
+    private final WebClient.Builder webClientBuilder;
 
     public String getAccessTokenFromKakao(String code) {
+        WebClient webClient = webClientBuilder.build();
 
-        KakaoTokenResponseDto kakaoTokenResponseDto = WebClient.create().post()
+        log.info("Requesting access token with code: {}", code);
+        log.info("Client ID: {}", clientId);
+        log.info("Redirect URI: {}", redirectUri);
+        log.info("Token URL: {}", tokenUrl);
+
+        KakaoTokenResponseDto kakaoTokenResponseDto = webClient.post()
                 .uri(uriBuilder -> uriBuilder
-                        .path(KATUH_TOKEN_URL)
+                        .scheme("https")
+                        .host("kauth.kakao.com")
+                        .path("/oauth/token")
                         .queryParam("grant_type", "authorization_code")
-                        .queryParam("client_id", client_id)
+                        .queryParam("client_id", clientId)
+                        .queryParam("redirect_uri", redirectUri)
                         .queryParam("code", code)
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
-                //TODO : Custom Exception
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
-                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+                    log.error("4xx error: {}", clientResponse.statusCode());
+                    return Mono.error(new RuntimeException("Invalid Parameter"));
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
+                    log.error("5xx error: {}", clientResponse.statusCode());
+                    return Mono.error(new RuntimeException("Internal Server Error"));
+                })
                 .bodyToMono(KakaoTokenResponseDto.class)
                 .block();
 
-
         log.info(" [Kakao Service] Access Token ------> {}", kakaoTokenResponseDto.getAccessToken());
         log.info(" [Kakao Service] Refresh Token ------> {}", kakaoTokenResponseDto.getRefreshToken());
-        //제공 조건: OpenID Connect가 활성화 된 앱의 토큰 발급 요청인 경우 또는 scope에 openid를 포함한 추가 항목 동의 받기 요청을 거친 토큰 발급 요청인 경우
         log.info(" [Kakao Service] Id Token ------> {}", kakaoTokenResponseDto.getIdToken());
         log.info(" [Kakao Service] Scope ------> {}", kakaoTokenResponseDto.getScope());
 
         return kakaoTokenResponseDto.getAccessToken();
     }
 
-
-
-
     public KakaoUserInfoResponseDto getUserInfo(String accessToken) {
+        WebClient webClient = webClientBuilder.build();
 
-        KakaoUserInfoResponseDto userInfo = WebClient.create()
-                .get()
+        KakaoUserInfoResponseDto userInfo = webClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(KAUTH_USER_URL)
+                        .scheme("https")
+                        .host("kapi.kakao.com")
+                        .path("/v2/user/me")
                         .build())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken) // access token 인가
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .header(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_X_WWW_FORM_URLENCODED.toString())
                 .retrieve()
-                //TODO : Custom Exception
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
-                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+                    log.error("4xx error: {}", clientResponse.statusCode());
+                    return Mono.error(new RuntimeException("Invalid Parameter"));
+                })
+                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
+                    log.error("5xx error: {}", clientResponse.statusCode());
+                    return Mono.error(new RuntimeException("Internal Server Error"));
+                })
                 .bodyToMono(KakaoUserInfoResponseDto.class)
                 .block();
 
         log.info("[ Kakao Service ] Auth ID ---> {} ", userInfo.getId());
         log.info("[ Kakao Service ] NickName ---> {} ", userInfo.getKakaoAccount().getProfile().getNickName());
-
         return userInfo;
     }
 }

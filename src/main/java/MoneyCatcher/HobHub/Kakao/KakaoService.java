@@ -30,7 +30,7 @@ public class KakaoService {
 
     private final WebClient.Builder webClientBuilder;
 
-    public String getAccessTokenFromKakao(String code) {
+    public KakaoTokenResponseDto getAccessTokenFromKakao(String code) { // Change return type
         WebClient webClient = webClientBuilder.build();
 
         log.info("Requesting access token with code: {}", code);
@@ -66,7 +66,7 @@ public class KakaoService {
         log.info(" [Kakao Service] Id Token ------> {}", kakaoTokenResponseDto.getIdToken());
         log.info(" [Kakao Service] Scope ------> {}", kakaoTokenResponseDto.getScope());
 
-        return kakaoTokenResponseDto.getAccessToken();
+        return kakaoTokenResponseDto;
     }
 
     public KakaoUserInfoResponseDto getUserInfo(String accessToken) {

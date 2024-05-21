@@ -28,13 +28,19 @@ public class KakaoLoginController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization code is missing");
         }
 
-        String accessToken = kakaoService.getAccessTokenFromKakao(code);
-        log.info("Received access token: {}", accessToken);
+        KakaoTokenResponseDto tokenResponse = kakaoService.getAccessTokenFromKakao(code);
+        log.info("Received access token: {}", tokenResponse.getAccessToken());
 
-        KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(accessToken);
+        KakaoUserInfoResponseDto userInfo = kakaoService.getUserInfo(tokenResponse.getAccessToken());
         log.info("Received user info: {}", userInfo);
 
+        // access token이랑 refresh token
+        Map<String, Object> response = new HashMap<>();
+        response.put("userInfo", userInfo);
+        response.put("accessToken", tokenResponse.getAccessToken());
+        response.put("refreshToken", tokenResponse.getRefreshToken());
+
         //로그인, 회원가입 로직 필요하면 추가
-        return ResponseEntity.ok(userInfo);
+        return ResponseEntity.ok(response);
     }
 }
